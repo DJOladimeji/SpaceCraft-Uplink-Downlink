@@ -1,0 +1,3 @@
+/SharedWebserver/build/CMakeFiles/SC_Uplink_Downlink.dir
+/SharedWebserver/build/CMakeFiles/edit_cache.dir
+/SharedWebserver/build/CMakeFiles/rebuild_cache.dir
