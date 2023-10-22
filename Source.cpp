@@ -18,23 +18,49 @@ using namespace crow;
 
 #include "Buffer.h"
 
-int main() { 
+int main() {
 	cout << "======================================================" << endl;
 	cout << "Welcome to the space Spacecrafts Uplink/Downlink" << endl;
 	cout << "======================================================" << endl;
 
 	//create a read from file object 
-	readFromFile(); 
+	fileData data = readFromFile();
+
+	struct IPADDRESSES {
+		string payloadGround;
+		string payloadSpace;
+		string payloadCentre;
+		string UplinkDownlinkGround;
+		string CAndDHGround;
+		string CAndDHSpacecraft;
+	};
+
+	IPADDRESSES IPAddresses;
+
+	IPAddresses.payloadGround = data.lines[0];
+	IPAddresses.payloadSpace = data.lines[1];
+	IPAddresses.payloadCentre = data.lines[2];
+	IPAddresses.UplinkDownlinkGround = data.lines[3];
+	IPAddresses.CAndDHGround = data.lines[4];
+	IPAddresses.CAndDHSpacecraft = data.lines[5];
+
+	cout << IPAddresses.payloadGround << endl;
+	cout << IPAddresses.payloadSpace << endl;
+	cout << IPAddresses.payloadCentre << endl;
+	cout << IPAddresses.UplinkDownlinkGround << endl;
+	cout << IPAddresses.CAndDHGround << endl;
+	cout << IPAddresses.CAndDHSpacecraft << endl;
 
 	//the read from file object will call a methods to read the IP address from file
 
 	//start counter 
 
+
 	crow::SimpleApp app;
 
-	CROW_ROUTE(app, "/UD_Ground_Receive").methods(HTTPMethod::Post, HTTPMethod::Get, HTTPMethod::Put) 
+	CROW_ROUTE(app, "/UD_Ground_Receive").methods(HTTPMethod::Post, HTTPMethod::Get, HTTPMethod::Put)
 		([](const crow::request& req, crow::response& res) {
-		string post = "POST"; 
+		string post = "POST";
 		string method = method_name(req.method);
 
 		int resultPost = post.compare(method);
@@ -44,7 +70,7 @@ int main() {
 
 			//check time
 
-			//if of time reponsed with 503
+			//if out of time reponsed with 503
 			/*
 			ostringstream contents;
 			res.code = 503;
@@ -66,9 +92,9 @@ int main() {
 			cout << endl;
 
 			//create a verify_path object
-			VerifyPath verify; 
-			PacketData packet; 
-			bool verified = verify.verify(json_data, packet); 
+			VerifyPath verify;
+			PacketData packet;
+			bool verified = verify.verify(json_data, packet);
 			//call a method in the object and send it the json_data to verify path
 
 			ostringstream contents;
@@ -97,7 +123,7 @@ int main() {
 
 			//check time
 
-			//if of time put in buffer
+			//if out of time put in buffer
 			/*Buffer buffer;
 			buffer.add_to_Buffer(json_data);
 
@@ -119,12 +145,12 @@ int main() {
 			cout << "====================================" << endl;
 			cout << "Recieved messages from C&DH" << endl;
 			cout << "====================================" << endl;
-			cout << endl; 
+			cout << endl;
 
 			//create a verify_path object
-			VerifyPath verify; 
-			PacketData packet; 
-			bool verified = verify.verify(json_data, packet); 
+			VerifyPath verify;
+			PacketData packet;
+			bool verified = verify.verify(json_data, packet);
 			//call a method in the object and send it the json_data to verify path
 
 			ostringstream contents;
@@ -147,6 +173,4 @@ int main() {
 
 	app.port(23500).multithreaded().run();
 	return 1;
-}
-
-
+} 

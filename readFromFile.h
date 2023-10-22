@@ -1,3 +1,13 @@
-#pragma once
+#ifndef FILE_READER_H 
+#define FILE_READER_H 
 
-void readFromFile(); 
+#include <vector>
+#include <string>
+
+struct fileData {
+	std::vector<std::string> lines;
+};
+
+fileData readFromFile();
+
+#endif 
