@@ -8,11 +8,15 @@ https://git-scm.com/downloads
 Using git in command link, clone this repository.
 git clone (this repository)
 
-For this application to work please follow these steps:
-docker run -ti --name newimage myserver bash
-apt-get update
-apt-get install g++
-apt-get install cmake
+For this application to work please follow these steps:\
+
+>>docker run -ti --name newimage myserver bash
+
+>>apt-get update
+
+>>apt-get install g++
+
+>apt-get install cmake
 apt-get install libboost-all-dev
 exit
 docker commit newimage webserver_dev
