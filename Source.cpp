@@ -97,6 +97,9 @@ int main() {
 			bool verified = verify.verify(json_data, packet);
 			//call a method in the object and send it the json_data to verify path
 
+			//if false return 503 error code 
+
+			//else
 			ostringstream contents;
 			res.code = 200;
 			res.write(contents.str());
