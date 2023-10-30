@@ -70,39 +70,45 @@ int main() {
 
 			//check time
 
-			//if out of time reponsed with 503
-			/*
-			ostringstream contents;
-			res.code = 503;
-			res.write(contents.str());
-			*/
-
-			//else
-
-			if (!json_data) {
+			if() {//out of time reponsed with 503
+				/*
 				ostringstream contents;
-				res.code = 400;
+				res.code = 503;
+				res.write(contents.str());
+				*/
+			}
+			else {
+				if (!json_data) {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "No json data attached to the payload from the ground" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+					
+					ostringstream contents;
+					res.code = 400;
+					res.write(contents.str());
+				}
+
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "Recieved messages from Ground" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
+				//create a verify_path object
+				VerifyPath verify;
+				PacketData packet;
+				bool verified = verify.verify(json_data, packet);
+				//call a method in the object and send it the json_data to verify path
+
+				//if false return 503 error code 
+
+				//else
+				ostringstream contents;
+				res.code = 200;
 				res.write(contents.str());
 			}
-
-			cout << endl;
-			cout << "====================================" << endl;
-			cout << "Recieved messages from Ground" << endl;
-			cout << "====================================" << endl;
-			cout << endl;
-
-			//create a verify_path object
-			VerifyPath verify;
-			PacketData packet;
-			bool verified = verify.verify(json_data, packet);
-			//call a method in the object and send it the json_data to verify path
-
-			//if false return 503 error code 
-
-			//else
-			ostringstream contents;
-			res.code = 200;
-			res.write(contents.str());
 		}
 		else {
 			ostringstream contents;
@@ -126,39 +132,61 @@ int main() {
 
 			//check time
 
-			//if out of time put in buffer
-			/*Buffer buffer;
-			buffer.add_to_Buffer(json_data);
+			if () {//out of time put in buffer
+				if (!json_data) {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "No json data added to the body of the data received from C&DH" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+					ostringstream contents;
+					res.code = 400;
+					res.write(contents.str());
+				}
+				else {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "Recieved messages from C&DH but no connection with the ground" << endl << "Added to buffer" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+					/*Buffer buffer;
+					buffer.add_to_Buffer(json_data);
 
-			//respond to the C&DH
-			ostringstream contents;
-			res.code = 200;
-			res.write(contents.str());
-			*/
+					//respond to the C&DH
+					ostringstream contents;
+					res.code = 200;
+					res.write(contents.str());
+					*/
+				}
+			}
+			else {
+				if (!json_data) {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "No json data added to the body of the data received from C&DH" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+					ostringstream contents;
+					res.code = 400;
+					res.write(contents.str());
+				}
 
-			//else
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "Recieved messages from C&DH" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
 
-			if (!json_data) {
+				//create a verify_path object
+				VerifyPath verify;
+				PacketData packet;
+				bool verified = verify.verify(json_data, packet);
+				//call a method in the object and send it the json_data to verify path
+
 				ostringstream contents;
-				res.code = 400;
+				res.code = 200;
 				res.write(contents.str());
 			}
-
-			cout << endl;
-			cout << "====================================" << endl;
-			cout << "Recieved messages from C&DH" << endl;
-			cout << "====================================" << endl;
-			cout << endl;
-
-			//create a verify_path object
-			VerifyPath verify;
-			PacketData packet;
-			bool verified = verify.verify(json_data, packet);
-			//call a method in the object and send it the json_data to verify path
-
-			ostringstream contents;
-			res.code = 200;
-			res.write(contents.str());
 		}
 		else {
 			ostringstream contents;
