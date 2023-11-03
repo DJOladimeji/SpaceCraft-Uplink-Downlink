@@ -64,20 +64,21 @@ int main() {
 		string method = method_name(req.method);
 
 		int resultPost = post.compare(method);
+		ostringstream contents;
 
 		if (resultPost == 0) {
 			crow::json::rvalue json_data = crow::json::load(req.body);
 
 			//check time
 
-			if() {//out of time reponsed with 503
+			//if(1) {//out of time reponsed with 503
 				/*
 				ostringstream contents;
 				res.code = 503;
 				res.write(contents.str());
 				*/
-			}
-			else {
+			//}
+			//else {
 				if (!json_data) {
 					cout << endl;
 					cout << "====================================" << endl;
@@ -85,10 +86,11 @@ int main() {
 					cout << "====================================" << endl;
 					cout << endl;
 					
-					ostringstream contents;
+					
 					res.code = 400;
 					res.write(contents.str());
-				}
+					res.end();
+			//	}
 
 				cout << endl;
 				cout << "====================================" << endl;
@@ -111,7 +113,6 @@ int main() {
 			}
 		}
 		else {
-			ostringstream contents;
 			res.code = 400;
 			res.write(contents.str());
 
@@ -129,26 +130,22 @@ int main() {
 
 		if (resultPost == 0) {
 			crow::json::rvalue json_data = crow::json::load(req.body);
+			cout << endl;
+			cout << "====================================" << endl;
+			cout << "Recieved messages from C&DH" << endl;
+			cout << "====================================" << endl;
+			cout << endl;
+
 
 			//check time
-
-			if () {//out of time put in buffer
-				if (!json_data) {
-					cout << endl;
+			//if out of time
+			//if {
+					/*cout << endl;
 					cout << "====================================" << endl;
-					cout << "No json data added to the body of the data received from C&DH" << endl;
-					cout << "====================================" << endl;
-					cout << endl;
-					ostringstream contents;
-					res.code = 400;
-					res.write(contents.str());
-				}
-				else {
-					cout << endl;
-					cout << "====================================" << endl;
-					cout << "Recieved messages from C&DH but no connection with the ground" << endl << "Added to buffer" << endl;
+					cout << "Added to buffer" << endl;
 					cout << "====================================" << endl;
 					cout << endl;
+					crow::json::rvalue json_data = crow::json::load(req.body);*/
 					/*Buffer buffer;
 					buffer.add_to_Buffer(json_data);
 
@@ -157,9 +154,10 @@ int main() {
 					res.code = 200;
 					res.write(contents.str());
 					*/
-				}
-			}
-			else {
+			//}
+
+			//else not out of time
+			//else {
 				if (!json_data) {
 					cout << endl;
 					cout << "====================================" << endl;
@@ -169,24 +167,21 @@ int main() {
 					ostringstream contents;
 					res.code = 400;
 					res.write(contents.str());
+					res.end();
 				}
+				else {
+					//create a verify_path object
+					VerifyPath verify;
+					PacketData packet;
+					bool verified = verify.verify(json_data, packet);
+					//call a method in the object and send it the json_data to verify path
 
-				cout << endl;
-				cout << "====================================" << endl;
-				cout << "Recieved messages from C&DH" << endl;
-				cout << "====================================" << endl;
-				cout << endl;
-
-				//create a verify_path object
-				VerifyPath verify;
-				PacketData packet;
-				bool verified = verify.verify(json_data, packet);
-				//call a method in the object and send it the json_data to verify path
-
-				ostringstream contents;
-				res.code = 200;
-				res.write(contents.str());
-			}
+					ostringstream contents;
+					res.code = 200;
+					res.write(contents.str());
+				}
+				
+			//}
 		}
 		else {
 			ostringstream contents;
@@ -202,6 +197,6 @@ int main() {
 
 
 
-	app.port(23500).multithreaded().run();
+	app.port(8080).multithreaded().run();
 	return 1;
 } 
