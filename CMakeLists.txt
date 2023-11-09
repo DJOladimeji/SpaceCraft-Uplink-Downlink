@@ -9,5 +9,5 @@ find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(Threads)
 
 include_directories(${Boost_INCLUDE_DIRS})
-add_executable(SC_Uplink_Downlink Source.cpp Verify_Path.cpp readFromFile.cpp Verify_Path.h readFromFile.h Send_Route_SpaceCraft.cpp curl.h curlver.h)
+add_executable(SC_Uplink_Downlink Source.cpp Verify_Path.cpp readFromFile.cpp Verify_Path.h readFromFile.h Send_Route_SpaceCraft.cpp curl.h curlver.h CheckBufferStatus.cpp)
 target_link_libraries(SC_Uplink_Downlink ${Boost_LIBRARIES} Threads::Threads)
