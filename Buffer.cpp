@@ -10,3 +10,6 @@ vector<crow::json::rvalue> Buffer::remove_from_buffer() {
 	return messages;
 }
 
+int Buffer::Buffer_size() {
+	return messages.size(); 
+}
