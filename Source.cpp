@@ -64,45 +64,55 @@ int main() {
 		string method = method_name(req.method);
 
 		int resultPost = post.compare(method);
+		ostringstream contents;
 
 		if (resultPost == 0) {
 			crow::json::rvalue json_data = crow::json::load(req.body);
 
 			//check time
 
-			//if out of time reponsed with 503
-			/*
-			ostringstream contents;
-			res.code = 503;
-			res.write(contents.str());
-			*/
-
-			//else
-
-			if (!json_data) {
+			//if(1) {//out of time reponsed with 503
+				/*
 				ostringstream contents;
-				res.code = 400;
+				res.code = 503;
+				res.write(contents.str());
+				*/
+			//}
+			//else {
+				if (!json_data) {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "No json data attached to the payload from the ground" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+					
+					
+					res.code = 400;
+					res.write(contents.str());
+					res.end();
+			//	}
+
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "Recieved messages from Ground" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
+				//create a verify_path object
+				VerifyPath verify;
+				PacketData packet;
+				bool verified = verify.verify(json_data, packet);
+				//call a method in the object and send it the json_data to verify path
+
+				//if false return 503 error code 
+
+				//else
+				ostringstream contents;
+				res.code = 200;
 				res.write(contents.str());
 			}
-
-			cout << endl;
-			cout << "====================================" << endl;
-			cout << "Recieved messages from Ground" << endl;
-			cout << "====================================" << endl;
-			cout << endl;
-
-			//create a verify_path object
-			VerifyPath verify;
-			PacketData packet;
-			bool verified = verify.verify(json_data, packet);
-			//call a method in the object and send it the json_data to verify path
-
-			ostringstream contents;
-			res.code = 200;
-			res.write(contents.str());
 		}
 		else {
-			ostringstream contents;
 			res.code = 400;
 			res.write(contents.str());
 
@@ -120,42 +130,58 @@ int main() {
 
 		if (resultPost == 0) {
 			crow::json::rvalue json_data = crow::json::load(req.body);
-
-			//check time
-
-			//if out of time put in buffer
-			/*Buffer buffer;
-			buffer.add_to_Buffer(json_data);
-
-			//respond to the C&DH
-			ostringstream contents;
-			res.code = 200;
-			res.write(contents.str());
-			*/
-
-			//else
-
-			if (!json_data) {
-				ostringstream contents;
-				res.code = 400;
-				res.write(contents.str());
-			}
-
 			cout << endl;
 			cout << "====================================" << endl;
 			cout << "Recieved messages from C&DH" << endl;
 			cout << "====================================" << endl;
 			cout << endl;
 
-			//create a verify_path object
-			VerifyPath verify;
-			PacketData packet;
-			bool verified = verify.verify(json_data, packet);
-			//call a method in the object and send it the json_data to verify path
 
-			ostringstream contents;
-			res.code = 200;
-			res.write(contents.str());
+			//check time
+			//if out of time
+			//if {
+					/*cout << endl;
+					cout << "====================================" << endl;
+					cout << "Added to buffer" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+					crow::json::rvalue json_data = crow::json::load(req.body);*/
+					/*Buffer buffer;
+					buffer.add_to_Buffer(json_data);
+
+					//respond to the C&DH
+					ostringstream contents;
+					res.code = 200;
+					res.write(contents.str());
+					*/
+			//}
+
+			//else not out of time
+			//else {
+				if (!json_data) {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "No json data added to the body of the data received from C&DH" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+					ostringstream contents;
+					res.code = 400;
+					res.write(contents.str());
+					res.end();
+				}
+				else {
+					//create a verify_path object
+					VerifyPath verify;
+					PacketData packet;
+					bool verified = verify.verify(json_data, packet);
+					//call a method in the object and send it the json_data to verify path
+
+					ostringstream contents;
+					res.code = 200;
+					res.write(contents.str());
+				}
+				
+			//}
 		}
 		else {
 			ostringstream contents;
@@ -171,6 +197,6 @@ int main() {
 
 
 
-	app.port(23500).multithreaded().run();
+	app.port(8080).multithreaded().run();
 	return 1;
 } 
