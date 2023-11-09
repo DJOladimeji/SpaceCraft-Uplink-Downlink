@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "readFromFile.h"
+#include "internalCounter.h" 
 #include "Verify_Path.h"
 #include <string>
 #include <vector>
@@ -24,7 +25,7 @@ int main() {
 	cout << "======================================================" << endl;
 
 	//create a read from file object 
-	fileData data = readFromFile();
+	fileData data = readFromFile(); 
 
 	struct IPADDRESSES {
 		string payloadGround;
@@ -54,6 +55,9 @@ int main() {
 	//the read from file object will call a methods to read the IP address from file
 
 	//start counter 
+	int connection = 0; 
+
+	connection = internalCounter();  //If connection is 1 (timer is under 4 min) and if it's 0 (timer is over 4 min) 
 
 
 	crow::SimpleApp app;
