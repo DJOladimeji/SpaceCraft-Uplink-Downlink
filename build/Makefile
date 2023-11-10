@@ -153,6 +153,30 @@ Buffer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Buffer.cpp.s
 .PHONY : Buffer.cpp.s
 
+CheckBufferStatus.o: CheckBufferStatus.cpp.o
+.PHONY : CheckBufferStatus.o
+
+# target to build an object file
+CheckBufferStatus.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/CheckBufferStatus.cpp.o
+.PHONY : CheckBufferStatus.cpp.o
+
+CheckBufferStatus.i: CheckBufferStatus.cpp.i
+.PHONY : CheckBufferStatus.i
+
+# target to preprocess a source file
+CheckBufferStatus.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/CheckBufferStatus.cpp.i
+.PHONY : CheckBufferStatus.cpp.i
+
+CheckBufferStatus.s: CheckBufferStatus.cpp.s
+.PHONY : CheckBufferStatus.s
+
+# target to generate assembly for a file
+CheckBufferStatus.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/CheckBufferStatus.cpp.s
+.PHONY : CheckBufferStatus.cpp.s
+
 Source.o: Source.cpp.o
 .PHONY : Source.o
 
@@ -237,6 +261,9 @@ help:
 	@echo "... Buffer.o"
 	@echo "... Buffer.i"
 	@echo "... Buffer.s"
+	@echo "... CheckBufferStatus.o"
+	@echo "... CheckBufferStatus.i"
+	@echo "... CheckBufferStatus.s"
 	@echo "... Source.o"
 	@echo "... Source.i"
 	@echo "... Source.s"

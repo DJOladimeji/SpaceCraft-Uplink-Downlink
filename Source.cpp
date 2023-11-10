@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include "string.h" 
+#include "CheckBufferStatus.h"
 
 #include <string>
 #include <fstream>
@@ -36,7 +37,9 @@ auto start_time = steady_clock::now();
 
 //start counter 
 //auto start_Time = startCounter();
-//int connection = internalCounter(start_Time); 
+//int connection = internalCounter(start_Time);
+// 
+ Buffer buffer; 
 
 int main() {
 	cout << "======================================================" << endl;
@@ -161,9 +164,14 @@ int main() {
 			}
 		}
 		else {
+			cout << endl;
+			cout << "====================================" << endl;
+			cout << "Didn't Recieve a POST request from the Ground Uplink/Downlink" << endl;
+			cout << "====================================" << endl;
+			cout << endl;
+
 			res.code = 400;
 			res.write(contents.str());
-
 		}
 		res.end();
 			});
@@ -204,8 +212,7 @@ int main() {
 				is_4_minute_timer = false;
 				start_time = steady_clock::now(); //reset the start time;
 
-				crow::json::rvalue json_data = crow::json::load(req.body); 
-				Buffer buffer;  
+				crow::json::rvalue json_data = crow::json::load(req.body);   
 				buffer.add_to_Buffer(json_data);  
 
 				//respond to the C&DH 
@@ -253,6 +260,12 @@ int main() {
 			}
 		}
 		else {
+			cout << endl;
+			cout << "====================================" << endl;
+			cout << "Didn't recieve A POST request from the C&DH" << endl;
+			cout << "====================================" << endl;
+			cout << endl;
+
 			ostringstream contents;
 			res.code = 400;
 			res.write(contents.str());
@@ -261,8 +274,49 @@ int main() {
 		res.end();
 			});
 
+	CROW_ROUTE(app, "/GroundConnection")
+		.methods("GET"_method)
+		([&](const crow::request& req)
+			{
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "C&DH Request Ground status" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
 
+				crow::json::wvalue response; 
+
+				if (is_4_minute_timer)
+				{
+					response["status"] = "Connection is established.";
+				}
+				else
+				{
+					response["status"] = "Connection is lost.";
+				}
+
+				return crow::response(response);
+		});
+
+	CROW_ROUTE(app, "/BufferStatus")
+		.methods("GET"_method)
+		([&](const crow::request& req)
+			{
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "C&DH request Buffer status" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
+				Result result = checkJsonArrayStatus(buffer);
+
+				crow::json::wvalue response; 
+				response["status"] = result.status;
+
+				return crow::response(response);
+			});
 
 	app.port(8080).multithreaded().run();
 	return 1;
 } 
+
