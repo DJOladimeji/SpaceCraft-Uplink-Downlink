@@ -3,6 +3,6 @@
 
 #include <iostream>
 
-int checkConnectionStatus();
+int checkConnectionStatus(auto* start_time);
 
 #endif // CONNECTION_CHECKER_H

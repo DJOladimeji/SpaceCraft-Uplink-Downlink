@@ -2,7 +2,11 @@
 
 #include "crow_all.h"  
 #include <iostream>
+#include <chrono>
+#include <thread>
 
+#include "Buffer.h"
+#include "out/ConnectionChecker.h"
 #include "readFromFile.h"
 #include "internalCounter.h" 
 #include "Verify_Path.h"
@@ -16,13 +20,29 @@
 
 using namespace std;
 using namespace crow;
+using namespace chrono; 
 
-#include "Buffer.h"
+//---------------------------------------makeshift timmer-----------------------------------
+//set timer times
+seconds duration_4_minutes(240);
+seconds duration_10_minutes(600); 
+
+//set the initial active timer 
+bool is_4_minute_timer = true;
+
+//get the currect time point
+auto start_time = steady_clock::now();
+//------------------------------------------------------------------------------------------
+
+//start counter 
+//auto start_Time = startCounter();
+//int connection = internalCounter(start_Time); 
 
 int main() {
 	cout << "======================================================" << endl;
 	cout << "Welcome to the space Spacecrafts Uplink/Downlink" << endl;
 	cout << "======================================================" << endl;
+
 
 	//create a read from file object 
 	fileData data = readFromFile(); 
@@ -50,16 +70,9 @@ int main() {
 	cout << IPAddresses.payloadCentre << endl;
 	cout << IPAddresses.UplinkDownlinkGround << endl;
 	cout << IPAddresses.CAndDHGround << endl;
-	cout << IPAddresses.CAndDHSpacecraft << endl;
-
-	//the read from file object will call a methods to read the IP address from file
-
-	//start counter 
-	int connection = 0; 
-
-	connection = internalCounter();  //If connection is 1 (timer is under 4 min) and if it's 0 (timer is over 4 min) 
-
-
+	cout << IPAddresses.CAndDHSpacecraft << endl; 
+	
+	
 	crow::SimpleApp app;
 
 	CROW_ROUTE(app, "/UD_Ground_Receive").methods(HTTPMethod::Post, HTTPMethod::Get, HTTPMethod::Put)
@@ -74,33 +87,59 @@ int main() {
 			crow::json::rvalue json_data = crow::json::load(req.body);
 
 			//check time
+			auto current_time = steady_clock::now();
+			auto elaspased_time = duration_cast<seconds>(current_time - start_time);
+			//bool connectionstatus = checkConnectionStatus(&start_Time); 
 
-			//if(1) {//out of time reponsed with 503
-				/*
+			if (is_4_minute_timer == true && elaspased_time >= duration_4_minutes){
+			//if (connectionstatus == false){
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "4 minutes timer is up, switching to 10 minutes timer" << endl;
+				cout << "No connection with the ground" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
+				//switch to 10 mintes timer 
+				is_4_minute_timer = false;
+				start_time = steady_clock::now(); //reset the start time;
+
 				ostringstream contents;
 				res.code = 503;
 				res.write(contents.str());
-				*/
-			//}
+			}
+			else if (is_4_minute_timer == false && elaspased_time >= duration_10_minutes){
 			//else {
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "10 minute timer expired, switching to 4 minutes" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
+				//switching to to 4 minutes timer
+				is_4_minute_timer = true;
+				start_time = steady_clock::now();
+			}
+
+			else if(is_4_minute_timer == true && elaspased_time <= duration_4_minutes){  
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "Recieved messages from Ground" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
 				if (!json_data) {
 					cout << endl;
 					cout << "====================================" << endl;
 					cout << "No json data attached to the payload from the ground" << endl;
 					cout << "====================================" << endl;
 					cout << endl;
-					
-					
+
+
 					res.code = 400;
 					res.write(contents.str());
 					res.end();
-			//	}
-
-				cout << endl;
-				cout << "====================================" << endl;
-				cout << "Recieved messages from Ground" << endl;
-				cout << "====================================" << endl;
-				cout << endl;
+				}
 
 				//create a verify_path object
 				VerifyPath verify;
@@ -109,11 +148,16 @@ int main() {
 				//call a method in the object and send it the json_data to verify path
 
 				//if false return 503 error code 
-
-				//else
-				ostringstream contents;
-				res.code = 200;
-				res.write(contents.str());
+				if (verified == false) {
+					res.code = 503;
+					res.write(contents.str());
+					res.end();
+				}
+				else {
+					ostringstream contents;
+					res.code = 200;
+					res.write(contents.str());
+				}
 			}
 		}
 		else {
@@ -142,26 +186,48 @@ int main() {
 
 
 			//check time
+			auto current_time = steady_clock::now();
+			auto elaspased_time = duration_cast<seconds>(current_time - start_time);
+			//bool connectionStatus = checkConnectionStatus(&start_Time);
+
 			//if out of time
-			//if {
-					/*cout << endl;
-					cout << "====================================" << endl;
-					cout << "Added to buffer" << endl;
-					cout << "====================================" << endl;
-					cout << endl;
-					crow::json::rvalue json_data = crow::json::load(req.body);*/
-					/*Buffer buffer;
-					buffer.add_to_Buffer(json_data);
+			if (is_4_minute_timer && elaspased_time >= duration_4_minutes){
+			//if(connectionStatus == false){
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "4 minutes timer is up, switching to 10 minutes timer" << endl;
+				cout << "No connection with the ground" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
 
-					//respond to the C&DH
-					ostringstream contents;
-					res.code = 200;
-					res.write(contents.str());
-					*/
-			//}
+				//switch to 10 mintes timer 
+				is_4_minute_timer = false;
+				start_time = steady_clock::now(); //reset the start time;
 
-			//else not out of time
-			//else {
+				crow::json::rvalue json_data = crow::json::load(req.body); 
+				Buffer buffer;  
+				buffer.add_to_Buffer(json_data);  
+
+				//respond to the C&DH 
+				ostringstream contents; 
+				res.code = 200; 
+				res.write(contents.str()); 
+					
+			}
+			else if (!is_4_minute_timer && elaspased_time >= duration_10_minutes){
+			//else{
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "10 minute timer expired, switching to 4 minutes" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
+				//switching to to 4 minutes timer
+				is_4_minute_timer = true;
+				start_time = steady_clock::now();
+			}
+
+			else if (is_4_minute_timer == true && elaspased_time <= duration_4_minutes) {
 				if (!json_data) {
 					cout << endl;
 					cout << "====================================" << endl;
@@ -184,8 +250,7 @@ int main() {
 					res.code = 200;
 					res.write(contents.str());
 				}
-				
-			//}
+			}
 		}
 		else {
 			ostringstream contents;
@@ -195,9 +260,6 @@ int main() {
 		}
 		res.end();
 			});
-
-	//revieve packets from C&DH
-	//if out of time send to buffer and respond with 200
 
 
 

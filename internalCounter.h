@@ -1,29 +1,27 @@
 #pragma once 
+#include <stdio.h>
+#include <iostream>
 #include <thread>
 #include <chrono>
 #include <future>
+#include <time.h>
 
-using namespace std; 
+using namespace std;
+using namespace chrono; 
 
-int counter(int limit, const string& name) {
-    int connection = 0;
+auto startCounter() {
+    auto start_time = chrono::high_resolution_clock::now();
 
-    for (int i = 1; i <= limit; ++i) {
-        this_thread::sleep_for(chrono::minutes(1));
-        cout << name << " timer is at: " << i << " minute(s)\n";
+    return start_time;
+}
 
-        if (i <= 4) {
-            connection = 1;
-            cout << "Connection is positive" << endl;
-        }
-        else {
-            connection = 0;
-            cout << "Connection is negative" << endl; 
-        }
+int counter(auto start_time) {
+    auto current_time = chrono::high_resolution_clock::now();
 
-    }
+    cout << "Program has been running for " << chrono::duration_cast<chrono::minutes>
+        (current_time - start_time).count() << " minutes" << endl;
 
-    cout << name << " timer has finished." << endl;
+    int minutes = chrono::duration_cast<chrono::minutes>(current_time - start_time).count();
 
-    return connection;
+    return minutes;
 }
