@@ -129,29 +129,29 @@ SC_Uplink_Downlink/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/build
 .PHONY : SC_Uplink_Downlink/fast
 
-Send_Route_SpaceCraft.o: Send_Route_SpaceCraft.cpp.o
-.PHONY : Send_Route_SpaceCraft.o
+Buffer.o: Buffer.cpp.o
+.PHONY : Buffer.o
 
 # target to build an object file
-Send_Route_SpaceCraft.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.o
-.PHONY : Send_Route_SpaceCraft.cpp.o
+Buffer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Buffer.cpp.o
+.PHONY : Buffer.cpp.o
 
-Send_Route_SpaceCraft.i: Send_Route_SpaceCraft.cpp.i
-.PHONY : Send_Route_SpaceCraft.i
+Buffer.i: Buffer.cpp.i
+.PHONY : Buffer.i
 
 # target to preprocess a source file
-Send_Route_SpaceCraft.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.i
-.PHONY : Send_Route_SpaceCraft.cpp.i
+Buffer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Buffer.cpp.i
+.PHONY : Buffer.cpp.i
 
-Send_Route_SpaceCraft.s: Send_Route_SpaceCraft.cpp.s
-.PHONY : Send_Route_SpaceCraft.s
+Buffer.s: Buffer.cpp.s
+.PHONY : Buffer.s
 
 # target to generate assembly for a file
-Send_Route_SpaceCraft.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.s
-.PHONY : Send_Route_SpaceCraft.cpp.s
+Buffer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Buffer.cpp.s
+.PHONY : Buffer.cpp.s
 
 Source.o: Source.cpp.o
 .PHONY : Source.o
@@ -234,9 +234,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SC_Uplink_Downlink"
-	@echo "... Send_Route_SpaceCraft.o"
-	@echo "... Send_Route_SpaceCraft.i"
-	@echo "... Send_Route_SpaceCraft.s"
+	@echo "... Buffer.o"
+	@echo "... Buffer.i"
+	@echo "... Buffer.s"
 	@echo "... Source.o"
 	@echo "... Source.i"
 	@echo "... Source.s"

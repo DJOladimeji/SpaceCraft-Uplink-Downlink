@@ -12,5 +12,6 @@ class Buffer {
 public:
 	void add_to_Buffer(crow::json::rvalue message_to_be_buffered); 
 	vector<crow::json::rvalue> remove_from_buffer();
+	int Buffer_size();
 };
 
