@@ -1,8 +1,13 @@
-#ifndef CONNECTION_CHECKER_H
-#define CONNECTION_CHECKER_H
+#pragma once 
 
 #include <iostream>
+#include <thread>
+#include <chrono>
+#include <future>
+#include <time.h>
 
-int checkConnectionStatus(auto* start_time);
+using namespace std;
+using namespace chrono; 
 
-#endif // CONNECTION_CHECKER_H
+int checkConnection(bool& is_4_minute_timer, auto& start_time, string from);
+
