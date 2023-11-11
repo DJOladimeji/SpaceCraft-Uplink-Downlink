@@ -215,10 +215,17 @@ int main() {
 				crow::json::rvalue json_data = crow::json::load(req.body);   
 				buffer.add_to_Buffer(json_data);  
 
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "No Connection Added message to buffer" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
 				//respond to the C&DH 
 				ostringstream contents; 
 				res.code = 200; 
 				res.write(contents.str()); 
+				res.end();
 					
 			}
 			else if (!is_4_minute_timer && elaspased_time >= duration_10_minutes){
@@ -257,6 +264,35 @@ int main() {
 					res.code = 200;
 					res.write(contents.str());
 				}
+			}
+
+			else if (!is_4_minute_timer == true && elaspased_time <= duration_10_minutes) {
+				if (!json_data) {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "No json data added to the body of the data received from C&DH" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+					ostringstream contents;
+					res.code = 400;
+					res.write(contents.str());
+					res.end();
+				}
+
+				crow::json::rvalue json_data = crow::json::load(req.body);
+				buffer.add_to_Buffer(json_data);
+
+				cout << endl;
+				cout << "====================================" << endl;
+				cout << "No Connection Added message to buffer" << endl;
+				cout << "====================================" << endl;
+				cout << endl;
+
+				//respond to the C&DH 
+				ostringstream contents;
+				res.code = 200;
+				res.write(contents.str());
+				res.end();
 			}
 		}
 		else {
