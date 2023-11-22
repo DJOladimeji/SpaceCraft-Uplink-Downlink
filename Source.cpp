@@ -13,6 +13,7 @@
 #include <vector>
 #include "string.h" 
 #include "CheckBufferStatus.h"
+#include "Send_Route_Ground.h"
 
 #include <string>
 #include <fstream>
@@ -67,7 +68,21 @@ auto start_time = steady_clock::now();
 		 cout << "====================================" << endl;
 		 cout << endl;
 
-		 return 1;
+		 vector<crow::json::rvalue> buffered_messages;
+		 int buffer_size = buffer.Buffer_size();
+
+		 if (buffer_size != 0) {
+			 buffered_messages = buffer.remove_from_buffer();
+
+			 for (int i = 0; i < buffered_messages.size(); i++) {
+				 sendtoGround(buffered_messages[i], 8080);
+			 }
+
+			 return 1;
+		 }
+		 else {
+			 return 1;
+		 }
 	 }
 
 	 else if (is_4_minute_timer == true && elaspased_time <= four_minutes) {
@@ -112,8 +127,9 @@ int main() {
 
 	//create a read from file object 
 	fileData data = readFromFile(); 
+	cout << "Read from file" << endl;
 
-	struct IPADDRESSES {
+	/*struct IPADDRESSES {
 		string payloadGround;
 		string payloadSpace;
 		string payloadCentre;
@@ -136,7 +152,7 @@ int main() {
 	cout << IPAddresses.payloadCentre << endl;
 	cout << IPAddresses.UplinkDownlinkGround << endl;
 	cout << IPAddresses.CAndDHGround << endl;
-	cout << IPAddresses.CAndDHSpacecraft << endl; 
+	cout << IPAddresses.CAndDHSpacecraft << endl; */
 	
 	
 	crow::SimpleApp app;
@@ -218,6 +234,12 @@ int main() {
 
 				//if false return 503 error code 
 				if (verified == false) {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "Verification of Message failed" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+
 					res.code = 503;
 					res.write(contents.str());
 					res.end();
@@ -254,6 +276,9 @@ int main() {
 		string method = method_name(req.method);
 
 		int resultPost = post.compare(method);
+
+		VerifyPath verify; 
+		PacketData packet;  
 
 		if (resultPost == 0) {
 			crow::json::rvalue json_data = crow::json::load(req.body);
@@ -297,16 +322,37 @@ int main() {
 				}
 				else {
 					//create a verify_path object
-					VerifyPath verify;
-					PacketData packet;
 					bool verified = verify.verify(json_data, packet);
+					
 
-					ostringstream contents;
-					res.code = 200;
-					res.write(contents.str());
+					if (verified == true) {
+						cout << endl;
+						cout << "====================================" << endl;
+						cout << "Messages verfied" << endl;
+						cout << "====================================" << endl;
+						cout << endl;
+
+						sendtoGround(json_data, 8080); 
+
+						ostringstream contents;
+						res.code = 200;
+						res.write(contents.str());
+					}
+					else{
+						cout << endl;
+						cout << "====================================" << endl;
+						cout << "Verification of Message failed" << endl;
+						cout << "====================================" << endl;
+						cout << endl;
+
+						ostringstream contents;
+						res.code = 400;
+						res.write(contents.str());
+						res.end();
+					}
 				}
 			}
-			else if (connectionStatus == 2){
+			else if (connectionStatus == 2) {
 				if (!json_data) {
 					cout << endl;
 					cout << "====================================" << endl;
@@ -318,16 +364,46 @@ int main() {
 					res.write(contents.str());
 					res.end();
 				}
-				else if(connectionStatus == 3) {
-					//create a verify_path object
-					VerifyPath verify;
-					PacketData packet;
-					bool verified = verify.verify(json_data, packet);
 
-					ostringstream contents;
-					res.code = 200;
-					res.write(contents.str());
+				else {
+					bool verified = verify.verify(json_data, packet); 
+					verified = true;
+					if (verified == true) {
+						cout << endl;
+						cout << "====================================" << endl;
+						cout << "Messages verfied" << endl;
+						cout << "====================================" << endl;
+						cout << endl;
+
+						sendtoGround(json_data, 8080);
+
+						ostringstream contents;
+						res.code = 200;
+						res.write(contents.str());
+					}
+					else {
+						cout << endl;
+						cout << "====================================" << endl;
+						cout << "Verification of Message failed" << endl;
+						cout << "====================================" << endl;
+						cout << endl;
+
+						ostringstream contents;
+						res.code = 400;
+						res.write(contents.str());
+						res.end();
+					}
 				}
+			}
+			else if(connectionStatus == 3) {
+				//create a verify_path object
+				VerifyPath verify;
+				PacketData packet;
+				bool verified = verify.verify(json_data, packet);
+
+				ostringstream contents;
+				res.code = 200;
+				res.write(contents.str());
 			}
 
 			//else if (!is_4_minute_timer == true && elaspased_time <= duration_10_minutes) {

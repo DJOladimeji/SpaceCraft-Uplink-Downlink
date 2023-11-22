@@ -3,8 +3,8 @@
  
 
 int createSocketAndConnect(char* host, int port) { 
-    int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (clientSocket < 0) {
+    int clientSocket = socket(AF_INET, SOCK_STREAM, 0); 
+    if (clientSocket < 0) { 
         perror("Error creating socket");
         return -1;
     }
@@ -35,9 +35,9 @@ char* sendtoGround(crow::json::rvalue json_data, int port) {
     port = 8080;
     const char *prefix = "http://";
     char *host = NULL;
-    const char* path = "/";
+    const char* path = "/receive/";
  
-	std::string fullPath = "http://0.0.0.0:8080/GroundConnection"; 
+	std::string fullPath = "http://10.144.96.96:8080"; 
 
     const char* Route = fullPath.c_str();
 
@@ -82,6 +82,12 @@ char* sendtoGround(crow::json::rvalue json_data, int port) {
         close(clientSocket);
         return NULL;
     }
+
+    cout << endl;
+    cout << "====================================" << endl;
+    cout << "Messages sent to ground" << endl;
+    cout << "====================================" << endl;
+    cout << endl;
 
     char response[4096]; 
     char* fullResponse = NULL; 
