@@ -30,7 +30,7 @@ For this application to work please follow these steps:
 
 Open a new  command prompt/terminal and run this:
 
->>docker run -ti -p 23500:23500 -v "Path to repository":/SharedWebserver webserver_dev bash
+>>docker run -ti -p 8080:8080 -v "Path to repository":/SharedWebserver webserver_dev bash
 
 >>mkdir build
 
