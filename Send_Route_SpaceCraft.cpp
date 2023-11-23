@@ -1,7 +1,8 @@
 #include "Send_Route_SpaceCraft.h"
 
 
-int createSocketAndConnect(char* host, int port) {
+int createSocketAndConnect(char* host, int port) 
+{
     int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (clientSocket < 0) {
         perror("Error creating socket");
@@ -31,78 +32,76 @@ int createSocketAndConnect(char* host, int port) {
 }
 
 
-char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
-{
-    port = 8080;
-    const char* prefix = "http://";
-    char* host = NULL;
-    const char* path = "/";
-
-    string url;
-    string verb;
-    try 
+char* SendToSpaceCraft(crow::json::rvalue json_data, int port) 
     {
-        url = json_data["url"].s();
-        verb = json_data["verb"].s(); 
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Error extracting URL from JSON: " << e.what() << std::endl;
-        return;
-    }
+        port = 8080;
+        const char* prefix = "http://";
+        char* host = nullptr;
+        const char* path = "/";
 
-  
-    string fullPath = url;
-    const char* Route = fullPath.c_str();
+        std::string url;
+        std::string verb;
 
-    char* url = strdup(Route);
-    char* token = strtok(url, "/");
-    if (token && strcmp(token, "http:") == 0) 
-    {
-        token = strtok(NULL, "/");
-    }
-
-    if (token) 
-    {
-        host = token;
-        token = strtok(NULL, "");
-        if (token) 
+        try 
         {
-            path = token;
+            url = json_data["url"].s();
+            verb = json_data["verb"].s();
         }
-    }
+        catch (const std::exception& e) 
+        {
+            std::cerr << "Error extracting URL from JSON: " << e.what() << std::endl;
+            return nullptr;
+        }
 
-    token = strchr(host, ':');
-    if (token) 
-    {
-        *token = '\0';
-        port = atoi(token + 1);
-    }
+        std::string fullPath = url;
+        const char* Route = fullPath.c_str();
 
-    int clientSocket = createSocketAndConnect(host, port);
-    free(url);
+        char* urlCopy = strdup(Route);
+        char* token = strtok(urlCopy, "/");
+        if (token && strcmp(token, "http:") == 0) {
+            token = strtok(NULL, "/");
+        }
 
-    crow::json::wvalue payload;
+        if (token) {
+            host = token;
+            token = strtok(NULL, "");
+            if (token) {
+                path = token;
+            }
+        }
 
-    try 
-    {
-   
-        payload["coordinate"]["x"] = json_data["coordinate"]["x"].d();
-        payload["coordinate"]["y"] = json_data["coordinate"]["y"].d();
-        payload["coordinate"]["z"] = json_data["coordinate"]["z"].d();
-        payload["rotation"]["p"] = json_data["rotation"]["p"].d();
-        payload["rotation"]["y"] = json_data["rotation"]["y"].d();
-        payload["rotation"]["r"] = json_data["rotation"]["r"].d();
-    }
-    catch (const std::exception& e) 
-    {
-        std::cerr << "Error extracting values from JSON: " << e.what() << std::endl;
-       
-    }
+        token = strchr(host, ':');
+        if (token) {
+            *token = '\0';
+            port = atoi(token + 1);
+        }
 
+        free(urlCopy);
 
-    std::ostringstream oss;
-    oss << payload;
-    std::string json_payload = oss.str();
+        int clientSocket = createSocketAndConnect(host, port);
+        if (clientSocket < 0) {
+            return nullptr;
+        }
+
+        crow::json::wvalue payload;
+
+        try {
+            payload["coordinate"]["x"] = json_data["coordinate"]["x"].d();
+            payload["coordinate"]["y"] = json_data["coordinate"]["y"].d();
+            payload["coordinate"]["z"] = json_data["coordinate"]["z"].d();
+            payload["rotation"]["p"] = json_data["rotation"]["p"].d();
+            payload["rotation"]["y"] = json_data["rotation"]["y"].d();
+            payload["rotation"]["r"] = json_data["rotation"]["r"].d();
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Error extracting values from JSON: " << e.what() << std::endl;
+            close(clientSocket);
+            return nullptr;
+        }
+
+        std::ostringstream oss;
+        oss << payload;
+        std::string json_payload = oss.str();
 
 
     char request[1000];
