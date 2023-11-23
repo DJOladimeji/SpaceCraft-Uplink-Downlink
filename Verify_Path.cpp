@@ -5,7 +5,7 @@
 // Definining a function to verify the path and store packet data
 bool VerifyPath::verify(const crow::json::rvalue& json_data, PacketData& packet) {
     // Checking if the "URI" and "method" fields exist in the JSON data
-    if (json_data.has("URI") && json_data["URI"].t() == crow::json::type::String &&
+    /*if (json_data.has("URI") && json_data["URI"].t() == crow::json::type::String &&
         json_data.has("route") && json_data["route"].t() == crow::json::type::String) {
         packet.uri = json_data["URI"].s();
         packet.method = json_data["route"].s();
@@ -36,5 +36,19 @@ bool VerifyPath::verify(const crow::json::rvalue& json_data, PacketData& packet)
         }
     }
 
-    return false;  // Path is not valid or from an unrecognized source
+    return false;  // Path is not valid or from an unrecognized source*/
+
+    string verb = json_data["Verb"].s();
+
+    if (verb == "POST"|| verb == "PUT"|| verb == "GET") {
+        return true;
+    }
+    else {
+        cout << endl;
+        cout << "====================================" << endl;
+        cout << "Data in verb place: " << verb << endl;
+        cout << "====================================" << endl;
+        cout << endl;
+        return false;
+    }
 }

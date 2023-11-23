@@ -367,7 +367,7 @@ int main() {
 
 				else {
 					bool verified = verify.verify(json_data, packet); 
-					verified = true;
+					//verified = true;
 					if (verified == true) {
 						cout << endl;
 						cout << "====================================" << endl;
@@ -465,11 +465,11 @@ int main() {
 
 				if (is_4_minute_timer) 
 				{
-					response["status"] = "Connection is established.";
+					response["status"] = "true";
 				}
 				else
 				{
-					response["status"] = "Connection is lost.";
+					response["status"] = "false";
 				}
 
 				return crow::response(response);
