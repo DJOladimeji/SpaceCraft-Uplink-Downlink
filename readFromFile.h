@@ -8,6 +8,15 @@ struct fileData {
 	std::vector<std::string> lines;
 };
 
-fileData readFromFile();
+struct IPADDRESSES { 
+	string CAndDHGround;			//Service 1 
+	string payloadCentre;			//Service 2 
+	string CAndDHSpacecraft;		//Service 3 
+	string UplinkDownlinkGround;	//Service 4 
+	string payloadSpace;			//Service 5 
+	string payloadGround;			//Service 6 
+};
+
+IPADDRESSES readFromFile(); 
 
 #endif 
