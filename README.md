@@ -16,6 +16,10 @@ For this application to work please follow these steps:
 
 >>apt-get install g++
 
+>>apt-get install gcc
+
+>>apt-get install nano
+
 >>apt-get install cmake
 
 >>apt-get install libboost-all-dev
