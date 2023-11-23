@@ -1,7 +1,7 @@
 #include "Send_Route_SpaceCraft.h"
 
 
-int createSocketAndConnect(char* host, int port) 
+int createSocketAndConnect_SpaceCraft(char* host, int port) 
 {
     int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (clientSocket < 0) {
@@ -39,19 +39,22 @@ char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
         char* host = nullptr;
         const char* path = "/";
 
-        std::string url;
-        std::string verb;
+        std::string tempurl; 
+        std::string tempverb; 
 
         try 
         {
-            url = json_data["url"].s();
-            verb = json_data["verb"].s();
+            tempurl = json_data["url"].s(); 
+            tempverb = json_data["verb"].s(); 
         }
         catch (const std::exception& e) 
         {
             std::cerr << "Error extracting URL from JSON: " << e.what() << std::endl;
             return nullptr;
         }
+
+        const char* url = tempurl.c_str();
+        const char* verb = tempverb.c_str();
 
         std::string fullPath = url;
         const char* Route = fullPath.c_str();
@@ -78,29 +81,38 @@ char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
 
         free(urlCopy);
 
-        int clientSocket = createSocketAndConnect(host, port);
+        int clientSocket = createSocketAndConnect_SpaceCraft(host, port); 
         if (clientSocket < 0) {
             return nullptr;
         }
 
-        crow::json::wvalue payload;
+        /*string coordinateX = json_data["coordinate"]["x"].s();
+        string coordinateY = json_data["coordinate"]["y"].s();
+        string coordinateZ = json_data["coordinate"]["z"].s();
+        string rotationP = json_data["rotation"]["p"].s();
+        string rotationY = json_data["rotation"]["y"].s();
+        string rotationR = json_data["rotation"]["r"].s();*/
 
-        try {
-            payload["coordinate"]["x"] = json_data["coordinate"]["x"].d();
-            payload["coordinate"]["y"] = json_data["coordinate"]["y"].d();
-            payload["coordinate"]["z"] = json_data["coordinate"]["z"].d();
-            payload["rotation"]["p"] = json_data["rotation"]["p"].d();
-            payload["rotation"]["y"] = json_data["rotation"]["y"].d();
-            payload["rotation"]["r"] = json_data["rotation"]["r"].d();
+        //crow::json::rvalue payload;
+
+        
+
+        /*try {
+            /*payload["coordinate"]["x"] = json_data["coordinate"]["x"].s();
+            payload["coordinate"]["y"] = json_data["coordinate"]["y"].s();
+            payload["coordinate"]["z"] = json_data["coordinate"]["z"].s();
+            payload["rotation"]["p"] = json_data["rotation"]["p"].s(); 
+            payload["rotation"]["y"] = json_data["rotation"]["y"].s();
+            payload["rotation"]["r"] = json_data["rotation"]["r"].s();
         }
         catch (const std::exception& e) {
             std::cerr << "Error extracting values from JSON: " << e.what() << std::endl;
             close(clientSocket);
             return nullptr;
-        }
+        }*/
 
         std::ostringstream oss;
-        oss << payload;
+        oss << json_data; 
         std::string json_payload = oss.str();
 
 

@@ -126,34 +126,8 @@ int main() {
 
 
 	//create a read from file object 
-	fileData data = readFromFile(); 
+	IPADDRESSES ipaddress = readFromFile();  
 	cout << "Read from file" << endl;
-
-	/*struct IPADDRESSES {
-		string payloadGround;
-		string payloadSpace;
-		string payloadCentre;
-		string UplinkDownlinkGround;
-		string CAndDHGround;
-		string CAndDHSpacecraft;
-	};
-
-	IPADDRESSES IPAddresses;
-
-	IPAddresses.payloadGround = data.lines[0];
-	IPAddresses.payloadSpace = data.lines[1];
-	IPAddresses.payloadCentre = data.lines[2];
-	IPAddresses.UplinkDownlinkGround = data.lines[3];
-	IPAddresses.CAndDHGround = data.lines[4];
-	IPAddresses.CAndDHSpacecraft = data.lines[5];
-
-	cout << IPAddresses.payloadGround << endl;
-	cout << IPAddresses.payloadSpace << endl;
-	cout << IPAddresses.payloadCentre << endl;
-	cout << IPAddresses.UplinkDownlinkGround << endl;
-	cout << IPAddresses.CAndDHGround << endl;
-	cout << IPAddresses.CAndDHSpacecraft << endl; */
-	
 	
 	crow::SimpleApp app;
 

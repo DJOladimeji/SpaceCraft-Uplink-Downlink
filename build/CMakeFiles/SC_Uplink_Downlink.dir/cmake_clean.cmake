@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SC_Uplink_Downlink.dir/CheckBufferStatus.cpp.o.d"
   "CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_Ground.cpp.o"
   "CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_Ground.cpp.o.d"
+  "CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.o"
+  "CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.o.d"
   "CMakeFiles/SC_Uplink_Downlink.dir/Source.cpp.o"
   "CMakeFiles/SC_Uplink_Downlink.dir/Source.cpp.o.d"
   "CMakeFiles/SC_Uplink_Downlink.dir/Verify_Path.cpp.o"

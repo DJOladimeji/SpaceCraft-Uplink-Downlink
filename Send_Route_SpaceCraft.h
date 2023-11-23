@@ -17,5 +17,5 @@
 using namespace crow;
 using namespace std;
 
-int createSocketAndConnect(char* host, int port);
+int createSocketAndConnect_SpaceCraft(char* host, int port);
 char* SendToSpaceCraft(crow::json::rvalue json_data, int port);

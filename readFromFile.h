@@ -1,8 +1,11 @@
 #ifndef FILE_READER_H 
 #define FILE_READER_H 
 
+#include <iostream>
 #include <vector>
 #include <string>
+
+using namespace std;
 
 struct fileData {
 	std::vector<std::string> lines;

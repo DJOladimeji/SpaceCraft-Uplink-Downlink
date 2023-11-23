@@ -201,6 +201,30 @@ Send_Route_Ground.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_Ground.cpp.s
 .PHONY : Send_Route_Ground.cpp.s
 
+Send_Route_SpaceCraft.o: Send_Route_SpaceCraft.cpp.o
+.PHONY : Send_Route_SpaceCraft.o
+
+# target to build an object file
+Send_Route_SpaceCraft.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.o
+.PHONY : Send_Route_SpaceCraft.cpp.o
+
+Send_Route_SpaceCraft.i: Send_Route_SpaceCraft.cpp.i
+.PHONY : Send_Route_SpaceCraft.i
+
+# target to preprocess a source file
+Send_Route_SpaceCraft.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.i
+.PHONY : Send_Route_SpaceCraft.cpp.i
+
+Send_Route_SpaceCraft.s: Send_Route_SpaceCraft.cpp.s
+.PHONY : Send_Route_SpaceCraft.s
+
+# target to generate assembly for a file
+Send_Route_SpaceCraft.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SC_Uplink_Downlink.dir/build.make CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.s
+.PHONY : Send_Route_SpaceCraft.cpp.s
+
 Source.o: Source.cpp.o
 .PHONY : Source.o
 
@@ -291,6 +315,9 @@ help:
 	@echo "... Send_Route_Ground.o"
 	@echo "... Send_Route_Ground.i"
 	@echo "... Send_Route_Ground.s"
+	@echo "... Send_Route_SpaceCraft.o"
+	@echo "... Send_Route_SpaceCraft.i"
+	@echo "... Send_Route_SpaceCraft.s"
 	@echo "... Source.o"
 	@echo "... Source.i"
 	@echo "... Source.s"
