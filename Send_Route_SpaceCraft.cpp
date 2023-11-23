@@ -1,78 +1,142 @@
-
-#include <iostream>
-#include <string>
-//#include <nlohmann/json.hpp>
-#include "curl.h"
-#include "crow_all.h"
-#include <map>
-
-//using json = nlohmann::json;
-using namespace crow;
-using namespace std;
+#include "Send_Route_SpaceCraft.h"
 
 
-// Callback function to write response data from cURL
-size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output)
-{
-    size_t totalSize = size * nmemb;
-    output->append(static_cast<char*>(contents), totalSize);
-    return totalSize;
+int createSocketAndConnect(char* host, int port) {
+    int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (clientSocket < 0) {
+        perror("Error creating socket");
+        return -1;
+    }
+
+    struct hostent* server = gethostbyname(host);
+    if (server == NULL) {
+        fprintf(stderr, "Error: No such host\n");
+        close(clientSocket);
+        return -1;
+    }
+
+    struct sockaddr_in serverAddress;
+    memset(&serverAddress, 0, sizeof(serverAddress));
+    serverAddress.sin_family = AF_INET;
+    memcpy(&serverAddress.sin_addr.s_addr, server->h_addr, server->h_length);
+    serverAddress.sin_port = htons(port);
+
+    if (connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0) {
+        perror("Error connecting to server");
+        close(clientSocket);
+        return -1;
+    }
+
+    return clientSocket;
 }
 
 
-void sendJsonPacketToUri(const crow::json::rvalue& jsonPacket)
+char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
 {
-    CURL* curl;
-    CURLcode res; 
+    port = 8080;
+    const char* prefix = "http://";
+    char* host = NULL;
+    const char* path = "/";
 
-    curl = curl_easy_init();
-    if (curl)
+    string url;
+    string verb;
+    try 
     {
-        // Check if the "URI" key exists in the JSON packet
-        if (jsonPacket.has("URI")) {
-            // Extract the URI from the JSON packet
-            const std::string& uri = jsonPacket["URI"].s();
+        url = json_data["url"].s();
+        verb = json_data["verb"].s(); 
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error extracting URL from JSON: " << e.what() << std::endl;
+        return;
+    }
 
-            // Set the cURL options
-            curl_easy_setopt(curl, CURLOPT_URL, uri.c_str());
-            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, NULL);
+  
+    string fullPath = url;
+    const char* Route = fullPath.c_str();
 
-            // Convert the JSON packet back to a string for the request body
-            string jsonPacketString = jsonPacket.operator std::string();
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonPacketString.c_str());
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, jsonPacketString.length());
+    char* url = strdup(Route);
+    char* token = strtok(url, "/");
+    if (token && strcmp(token, "http:") == 0) 
+    {
+        token = strtok(NULL, "/");
+    }
 
-            // Response data will be stored in this string
-            string response_data;
-
-            // Set the callback function to handle the response
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_data);
-
-            // Perform the cURL POST request
-            res = curl_easy_perform(curl);
-
-            // Check for errors
-            if (res != CURLE_OK)
-            {
-                std::cerr << "cURL failed: " << curl_easy_strerror(res) << std::endl;
-            }
-            else
-            {
-                cout << "Packet sent successfully to " << uri << std::endl;
-                cout << "Response: " << response_data << std::endl;
-            }
-
-            // Clean up cURL
-            curl_easy_cleanup(curl);
-        }
-        else
+    if (token) 
+    {
+        host = token;
+        token = strtok(NULL, "");
+        if (token) 
         {
-            std::cerr << "URI not found in the JSON packet." << std::endl;
+            path = token;
         }
     }
-    else
+
+    token = strchr(host, ':');
+    if (token) 
     {
-        std::cerr << "cURL initialization failed." << std::endl;
+        *token = '\0';
+        port = atoi(token + 1);
     }
+
+    int clientSocket = createSocketAndConnect(host, port);
+    free(url);
+
+    crow::json::wvalue payload;
+
+    try 
+    {
+   
+        payload["coordinate"]["x"] = json_data["coordinate"]["x"].d();
+        payload["coordinate"]["y"] = json_data["coordinate"]["y"].d();
+        payload["coordinate"]["z"] = json_data["coordinate"]["z"].d();
+        payload["rotation"]["p"] = json_data["rotation"]["p"].d();
+        payload["rotation"]["y"] = json_data["rotation"]["y"].d();
+        payload["rotation"]["r"] = json_data["rotation"]["r"].d();
+    }
+    catch (const std::exception& e) 
+    {
+        std::cerr << "Error extracting values from JSON: " << e.what() << std::endl;
+       
+    }
+
+
+    std::ostringstream oss;
+    oss << payload;
+    std::string json_payload = oss.str();
+
+
+    char request[1000];
+    sprintf(request, "%s %s HTTP/1.1\r\nHost: %s\r\nContent-Type: application/json\r\nContent-Length: %zu\r\nConnection: close\r\n\r\n%s", verb, path, host, json_payload.length(), json_payload.c_str());
+
+    if (send(clientSocket, request, strlen(request), 0) < 0) 
+    {
+        perror("Error sending space craft request");
+        close(clientSocket);
+        return NULL;
+    }
+
+    char response[4096];
+    char* fullResponse = NULL;
+    ssize_t bytesRead;
+    size_t totalBytesRead = 0;
+
+    while ((bytesRead = recv(clientSocket, response, 4096 - 1, 0)) > 0) 
+    {
+        response[bytesRead] = '\0';
+        if (fullResponse == NULL) 
+        {
+            fullResponse = strdup(response);
+        }
+        else 
+        {
+            strcat(fullResponse, response);
+        }
+        totalBytesRead += bytesRead;
+    }
+
+    close(clientSocket);
+
+    cout << fullResponse << endl;
+
+    return fullResponse;
 }
