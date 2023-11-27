@@ -38,7 +38,7 @@ bool VerifyPath::verify(const crow::json::rvalue& json_data, PacketData& packet)
 
     return false;  // Path is not valid or from an unrecognized source*/
 
-    string verb = json_data["Verb"].s();
+    string verb = json_data["verb"].s();
 
     if (verb == "POST"|| verb == "PUT"|| verb == "GET") {
         return true;

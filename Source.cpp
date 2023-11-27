@@ -14,6 +14,7 @@
 #include "string.h" 
 #include "CheckBufferStatus.h"
 #include "Send_Route_Ground.h"
+#include "Send_Route_SpaceCraft.h"
 
 #include <string>
 #include <fstream>
@@ -182,6 +183,8 @@ int main() {
 					res.end();
 				}
 				else {
+					char* returnMessage = SendToSpaceCraft(json_data, 8080);
+
 					ostringstream contents;
 					res.code = 200;
 					res.write(contents.str());
@@ -219,6 +222,8 @@ int main() {
 					res.end();
 				}
 				else {
+					char* returnMessage = SendToSpaceCraft(json_data, 8080); 
+
 					ostringstream contents;
 					res.code = 200;
 					res.write(contents.str());
@@ -297,7 +302,6 @@ int main() {
 				else {
 					//create a verify_path object
 					bool verified = verify.verify(json_data, packet);
-					
 
 					if (verified == true) {
 						cout << endl;
@@ -369,19 +373,9 @@ int main() {
 					}
 				}
 			}
-			else if(connectionStatus == 3) {
-				//create a verify_path object
-				VerifyPath verify;
-				PacketData packet;
-				bool verified = verify.verify(json_data, packet);
-
-				ostringstream contents;
-				res.code = 200;
-				res.write(contents.str());
-			}
 
 			//else if (!is_4_minute_timer == true && elaspased_time <= duration_10_minutes) {
-			else if (connectionStatus == 3){
+			else if (connectionStatus == 3){ 
 				if (!json_data) {
 					cout << endl;
 					cout << "====================================" << endl;
@@ -394,20 +388,44 @@ int main() {
 					res.end();
 				}
 
-				crow::json::rvalue json_data = crow::json::load(req.body);
-				buffer.add_to_Buffer(json_data);
+				//create a verify_path object
+				VerifyPath verify;
+				PacketData packet;
+				bool verified = verify.verify(json_data, packet);
 
-				cout << endl;
-				cout << "====================================" << endl;
-				cout << "No Connection Added message to buffer" << endl;
-				cout << "====================================" << endl;
-				cout << endl;
+				if (verified == true) {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "Messages verfied" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
 
-				//respond to the C&DH 
-				ostringstream contents;
-				res.code = 200;
-				res.write(contents.str());
-				res.end();
+					crow::json::rvalue json_data = crow::json::load(req.body);
+					buffer.add_to_Buffer(json_data);
+
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "No Connection Added message to buffer" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+
+					ostringstream contents;
+					res.code = 200;
+					res.write(contents.str());
+					res.end();
+				}
+				else {
+					cout << endl;
+					cout << "====================================" << endl;
+					cout << "Verification of Message failed" << endl;
+					cout << "====================================" << endl;
+					cout << endl;
+
+					ostringstream contents;
+					res.code = 400;
+					res.write(contents.str());
+					res.end();
+				}
 			}
 		}
 		else {

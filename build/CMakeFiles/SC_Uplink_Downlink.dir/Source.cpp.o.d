@@ -1635,4 +1635,17 @@ CMakeFiles/SC_Uplink_Downlink.dir/Source.cpp.o: \
  /SharedWebserver/readFromFile.h /SharedWebserver/internalCounter.h \
  /SharedWebserver/Verify_Path.h /SharedWebserver/CheckBufferStatus.h \
  /SharedWebserver/Send_Route_Ground.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
+ /SharedWebserver/Send_Route_SpaceCraft.h /usr/include/c++/11/regex \
+ /usr/include/c++/11/stack /usr/include/c++/11/bits/stl_stack.h \
+ /usr/include/c++/11/bits/regex_constants.h \
+ /usr/include/c++/11/bits/regex_error.h \
+ /usr/include/c++/11/bits/regex_automaton.h \
+ /usr/include/c++/11/bits/regex_automaton.tcc \
+ /usr/include/c++/11/bits/regex_scanner.h \
+ /usr/include/c++/11/bits/regex_scanner.tcc \
+ /usr/include/c++/11/bits/regex_compiler.h \
+ /usr/include/c++/11/bits/regex_compiler.tcc \
+ /usr/include/c++/11/bits/regex.h /usr/include/c++/11/bits/regex.tcc \
+ /usr/include/c++/11/bits/regex_executor.h \
+ /usr/include/c++/11/bits/regex_executor.tcc

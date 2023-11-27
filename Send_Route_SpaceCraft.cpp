@@ -1,7 +1,7 @@
 #include "Send_Route_SpaceCraft.h"
 
 
-int createSocketAndConnect_SpaceCraft(char* host, int port) 
+int createSocketAndConnect_SpaceCraft(string host, int port) 
 {
     int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (clientSocket < 0) {
@@ -9,7 +9,8 @@ int createSocketAndConnect_SpaceCraft(char* host, int port)
         return -1;
     }
 
-    struct hostent* server = gethostbyname(host);
+    const char* temphost = host.c_str();
+    struct hostent* server = gethostbyname(temphost); 
     if (server == NULL) {
         fprintf(stderr, "Error: No such host\n");
         close(clientSocket);
@@ -32,19 +33,43 @@ int createSocketAndConnect_SpaceCraft(char* host, int port)
 }
 
 
-char* SendToSpaceCraft(crow::json::rvalue json_data, int port) 
+char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
     {
         port = 8080;
         const char* prefix = "http://";
-        char* host = nullptr;
-        const char* path = "/";
+        char* host = NULL;
+        const char* path; 
 
-        std::string tempurl; 
+        std::string tempurl;
+        std::string temp;
         std::string tempverb; 
+        std::string temppath;
+        std::string http;
+        std::string IP;
+        std::string eightyeighty;
 
         try 
         {
-            tempurl = json_data["url"].s(); 
+            temp = json_data["url"].s();
+            istringstream streamline(temp);
+
+            getline(streamline, http, ':'); 
+            http += ":";
+            getline(streamline, IP, ':'); 
+            IP += ":";
+            getline(streamline, eightyeighty, '/'); 
+    
+            tempurl += http; 
+            tempurl += IP;
+            tempurl += eightyeighty; 
+
+            getline(streamline, temppath);   
+            string start = "/";
+            start += temppath; 
+            path = start.c_str();     
+
+            cout << "url: " << tempurl << endl;
+            cout << "path: " << path << endl; 
             tempverb = json_data["verb"].s(); 
         }
         catch (const std::exception& e) 
@@ -79,37 +104,14 @@ char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
             port = atoi(token + 1);
         }
 
+        std::string tempHost = std::string(host);
+
         free(urlCopy);
 
-        int clientSocket = createSocketAndConnect_SpaceCraft(host, port); 
+        int clientSocket = createSocketAndConnect_SpaceCraft(tempHost, port);  
         if (clientSocket < 0) {
             return nullptr;
         }
-
-        /*string coordinateX = json_data["coordinate"]["x"].s();
-        string coordinateY = json_data["coordinate"]["y"].s();
-        string coordinateZ = json_data["coordinate"]["z"].s();
-        string rotationP = json_data["rotation"]["p"].s();
-        string rotationY = json_data["rotation"]["y"].s();
-        string rotationR = json_data["rotation"]["r"].s();*/
-
-        //crow::json::rvalue payload;
-
-        
-
-        /*try {
-            /*payload["coordinate"]["x"] = json_data["coordinate"]["x"].s();
-            payload["coordinate"]["y"] = json_data["coordinate"]["y"].s();
-            payload["coordinate"]["z"] = json_data["coordinate"]["z"].s();
-            payload["rotation"]["p"] = json_data["rotation"]["p"].s(); 
-            payload["rotation"]["y"] = json_data["rotation"]["y"].s();
-            payload["rotation"]["r"] = json_data["rotation"]["r"].s();
-        }
-        catch (const std::exception& e) {
-            std::cerr << "Error extracting values from JSON: " << e.what() << std::endl;
-            close(clientSocket);
-            return nullptr;
-        }*/
 
         std::ostringstream oss;
         oss << json_data; 
@@ -118,6 +120,11 @@ char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
 
     char request[1000];
     sprintf(request, "%s %s HTTP/1.1\r\nHost: %s\r\nContent-Type: application/json\r\nContent-Length: %zu\r\nConnection: close\r\n\r\n%s", verb, path, host, json_payload.length(), json_payload.c_str());
+    cout << endl;
+    cout << "====================================" << endl;
+    cout << "Message sent to subsystem" << endl;
+    cout << "====================================" << endl;
+    cout << endl;
 
     if (send(clientSocket, request, strlen(request), 0) < 0) 
     {

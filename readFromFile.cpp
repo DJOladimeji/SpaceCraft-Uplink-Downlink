@@ -20,12 +20,12 @@ IPADDRESSES readFromFile() {
 		file.close(); 
 
 
-		IPAddresses.CAndDHGround = data.lines[0];
-		IPAddresses.payloadCentre = data.lines[1];
-		IPAddresses.CAndDHSpacecraft = data.lines[2];
-		IPAddresses.UplinkDownlinkGround = data.lines[3];
-		IPAddresses.payloadSpace = data.lines[4];
-		IPAddresses.payloadGround = data.lines[5]; 
+		IPAddresses.CAndDHSpacecraft = data.lines[0];
+		IPAddresses.payloadSpace = data.lines[1];
+		IPAddresses.UplinkDownlinkGround = data.lines[2];
+		IPAddresses.CAndDHGround = data.lines[3];
+		IPAddresses.payloadGround = data.lines[4];
+		IPAddresses.payloadCentre = data.lines[5]; 
 	}
 	else {
 		cerr << "Unable to open file: " << fileName << endl;

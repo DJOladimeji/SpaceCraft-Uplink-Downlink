@@ -5559,6 +5559,11 @@ CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.o: ../Send_Route_Spa
   /usr/include/c++/11/bits/istream.tcc \
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/bits/sstream.tcc \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
   /usr/include/x86_64-linux-gnu/sys/socket.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
   /usr/include/x86_64-linux-gnu/bits/socket.h \
@@ -5952,7 +5957,6 @@ CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.o: ../Send_Route_Spa
   /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
   /usr/include/libintl.h \
-  /usr/include/c++/11/bits/codecvt.h \
   /usr/include/c++/11/bits/locale_facets_nonio.tcc \
   /usr/include/c++/11/bits/locale_conv.h \
   /usr/include/c++/11/bits/unique_ptr.h \
@@ -6864,10 +6868,6 @@ CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.o: ../Send_Route_Spa
   /usr/include/boost/asio/windows/stream_handle.hpp \
   /usr/include/boost/asio/write_at.hpp \
   /usr/include/boost/asio/impl/write_at.hpp \
-  /usr/include/c++/11/fstream \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc \
   /usr/include/boost/algorithm/string/trim.hpp \
   /usr/include/boost/algorithm/string/detail/trim.hpp \
   /usr/include/boost/algorithm/string/classification.hpp \
@@ -7150,7 +7150,22 @@ CMakeFiles/SC_Uplink_Downlink.dir/Send_Route_SpaceCraft.cpp.o: ../Send_Route_Spa
   /usr/include/boost/date_time/posix_time/conversion.hpp \
   /usr/include/boost/date_time/filetime_functions.hpp \
   /usr/include/boost/date_time/posix_time/time_parsers.hpp \
-  /usr/include/c++/11/thread
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/regex \
+  /usr/include/c++/11/stack \
+  /usr/include/c++/11/bits/stl_stack.h \
+  /usr/include/c++/11/bits/regex_constants.h \
+  /usr/include/c++/11/bits/regex_error.h \
+  /usr/include/c++/11/bits/regex_automaton.h \
+  /usr/include/c++/11/bits/regex_automaton.tcc \
+  /usr/include/c++/11/bits/regex_scanner.h \
+  /usr/include/c++/11/bits/regex_scanner.tcc \
+  /usr/include/c++/11/bits/regex_compiler.h \
+  /usr/include/c++/11/bits/regex_compiler.tcc \
+  /usr/include/c++/11/bits/regex.h \
+  /usr/include/c++/11/bits/regex.tcc \
+  /usr/include/c++/11/bits/regex_executor.h \
+  /usr/include/c++/11/bits/regex_executor.tcc
 
 CMakeFiles/SC_Uplink_Downlink.dir/Source.cpp.o: ../Source.cpp \
   /usr/include/stdc-predef.h \
@@ -8943,7 +8958,23 @@ CMakeFiles/SC_Uplink_Downlink.dir/Source.cpp.o: ../Source.cpp \
   ../Verify_Path.h \
   ../CheckBufferStatus.h \
   ../Send_Route_Ground.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
+  ../Send_Route_SpaceCraft.h \
+  /usr/include/c++/11/regex \
+  /usr/include/c++/11/stack \
+  /usr/include/c++/11/bits/stl_stack.h \
+  /usr/include/c++/11/bits/regex_constants.h \
+  /usr/include/c++/11/bits/regex_error.h \
+  /usr/include/c++/11/bits/regex_automaton.h \
+  /usr/include/c++/11/bits/regex_automaton.tcc \
+  /usr/include/c++/11/bits/regex_scanner.h \
+  /usr/include/c++/11/bits/regex_scanner.tcc \
+  /usr/include/c++/11/bits/regex_compiler.h \
+  /usr/include/c++/11/bits/regex_compiler.tcc \
+  /usr/include/c++/11/bits/regex.h \
+  /usr/include/c++/11/bits/regex.tcc \
+  /usr/include/c++/11/bits/regex_executor.h \
+  /usr/include/c++/11/bits/regex_executor.tcc
 
 CMakeFiles/SC_Uplink_Downlink.dir/Verify_Path.cpp.o: ../Verify_Path.cpp \
   /usr/include/stdc-predef.h \
@@ -10941,6 +10972,24 @@ CMakeFiles/SC_Uplink_Downlink.dir/readFromFile.cpp.o: ../readFromFile.cpp \
 
 ../Source.cpp:
 
+/usr/include/c++/11/bits/regex_executor.tcc:
+
+/usr/include/c++/11/bits/regex_executor.h:
+
+/usr/include/c++/11/bits/regex_compiler.tcc:
+
+/usr/include/c++/11/bits/regex_compiler.h:
+
+/usr/include/c++/11/bits/regex_scanner.h:
+
+/usr/include/c++/11/bits/regex_automaton.h:
+
+/usr/include/c++/11/bits/regex_constants.h:
+
+/usr/include/c++/11/bits/stl_stack.h:
+
+/usr/include/c++/11/stack:
+
 ../Send_Route_SpaceCraft.h:
 
 ../Send_Route_SpaceCraft.cpp:
@@ -11517,6 +11566,8 @@ CMakeFiles/SC_Uplink_Downlink.dir/readFromFile.cpp.o: ../readFromFile.cpp \
 
 /usr/include/boost/asio/is_write_buffered.hpp:
 
+/usr/include/c++/11/bits/regex.tcc:
+
 /usr/include/boost/lexical_cast/detail/inf_nan.hpp:
 
 /usr/include/boost/asio/ip/v6_only.hpp:
@@ -11745,6 +11796,8 @@ CMakeFiles/SC_Uplink_Downlink.dir/readFromFile.cpp.o: ../readFromFile.cpp \
 
 /usr/include/boost/numeric/conversion/detail/udt_builtin_mixture.hpp:
 
+/usr/include/c++/11/bits/regex_error.h:
+
 /usr/include/boost/numeric/conversion/detail/sign_mixture.hpp:
 
 /usr/include/boost/numeric/conversion/int_float_mixture_enum.hpp:
@@ -11822,6 +11875,8 @@ CMakeFiles/SC_Uplink_Downlink.dir/readFromFile.cpp.o: ../readFromFile.cpp \
 /usr/include/c++/11/bits/vector.tcc:
 
 /usr/include/boost/concept/assert.hpp:
+
+/usr/include/c++/11/bits/regex_automaton.tcc:
 
 /usr/include/boost/asio/execution/schedule.hpp:
 
@@ -12080,6 +12135,8 @@ CMakeFiles/SC_Uplink_Downlink.dir/readFromFile.cpp.o: ../readFromFile.cpp \
 /usr/include/boost/concept/detail/concept_undef.hpp:
 
 /usr/include/boost/smart_ptr/detail/sp_thread_pause.hpp:
+
+/usr/include/c++/11/bits/regex.h:
 
 /usr/include/boost/predef/library/std/stdcpp3.h:
 
@@ -12671,6 +12728,8 @@ CMakeFiles/SC_Uplink_Downlink.dir/readFromFile.cpp.o: ../readFromFile.cpp \
 
 /usr/include/boost/asio/detail/conditionally_enabled_event.hpp:
 
+/usr/include/c++/11/bits/regex_scanner.tcc:
+
 /usr/include/c++/11/bits/stl_algobase.h:
 
 /usr/include/boost/range/concepts.hpp:
@@ -12720,6 +12779,8 @@ CMakeFiles/SC_Uplink_Downlink.dir/readFromFile.cpp.o: ../readFromFile.cpp \
 /usr/include/boost/preprocessor/list/detail/fold_left.hpp:
 
 /usr/include/boost/mpl/aux_/config/use_preprocessed.hpp:
+
+/usr/include/c++/11/regex:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
 
