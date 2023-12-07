@@ -443,6 +443,7 @@ int main() {
 		res.end();
 			});
 
+		//send the status of the ground connection to C&DH
 	CROW_ROUTE(app, "/GroundConnection")
 		.methods("GET"_method)
 		([&](const crow::request& req)
@@ -467,6 +468,7 @@ int main() {
 				return crow::response(response);
 		});
 
+	//send the buffer status to the C&DH
 	CROW_ROUTE(app, "/BufferStatus")
 		.methods("GET"_method)
 		([&](const crow::request& req)
