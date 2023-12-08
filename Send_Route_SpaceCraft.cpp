@@ -48,6 +48,8 @@ char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
         std::string IP;
         std::string eightyeighty;
 
+        string tempstorage; 
+
         try 
         {
             temp = json_data["url"].s();
@@ -68,9 +70,11 @@ char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
             start += temppath; 
             path = start.c_str();     
 
-            cout << "url: " << tempurl << endl;
-            cout << "path: " << path << endl; 
+            tempstorage = path;   
+
             tempverb = json_data["verb"].s(); 
+            cout << "Temp verb: " << tempverb << endl;
+            cout << "Pre Path: " << path << endl; 
         }
         catch (const std::exception& e) 
         {
@@ -116,6 +120,11 @@ char* SendToSpaceCraft(crow::json::rvalue json_data, int port)
         std::ostringstream oss;
         oss << json_data; 
         std::string json_payload = oss.str();
+
+        cout << "verb: " << verb <<  endl;
+        cout << "url: " << tempurl << endl;
+        path = tempstorage.c_str(); 
+        cout << "path: " << path << endl;
 
 
     char request[1000];

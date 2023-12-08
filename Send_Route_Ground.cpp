@@ -37,7 +37,7 @@ char* sendtoGround(crow::json::rvalue json_data, int port) {
     char *host = NULL;
     const char* path = "/receive/";
  
-	std::string fullPath = "http://10.144.111.72:8080"; 
+	std::string fullPath = "http://10.144.119.108:8080"; 
 
     const char* Route = fullPath.c_str();
 
